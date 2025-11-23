@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal SMPN 2 Kejayan</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2E7D32; /* Hijau Sekolah */
+            --accent-color: #FF7F00;  /* Oranye Sekolah */
+            --bg-color: #F0F2F5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            overflow: hidden; /* Mencegah scroll ganda */
+        }
+
+        /* --- NAVBAR ATAS (Desktop) --- */
+        .top-navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        .brand-logo {
+            height: 40px;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        /* --- CONTAINER UTAMA --- */
+        .main-container {
+            height: calc(100vh - 60px); /* Full height minus navbar */
+            overflow-y: auto;
+            position: relative;
+            padding-bottom: 80px; /* Space untuk bottom nav di mobile */
+        }
+
+        /* --- DASHBOARD CARDS --- */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), #1b5e20);
+            color: white;
+            border-radius: 0 0 25px 25px;
+            padding: 30px 20px 50px;
+            margin-bottom: -30px;
+            text-align: center;
+        }
+        
+        .menu-grid {
+            padding: 0 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .icon-mbg { background-color: #FFF3E0; color: var(--accent-color); }
+        .icon-ifp { background-color: #E8F5E9; color: var(--primary-color); }
+        .icon-kuitansi { background-color: #E3F2FD; color: #1565C0; }
+
+        /* --- IFRAME CONTAINER & LOADER --- */
+        .app-view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: white;
+        }
+
+        .app-view.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .full-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Loader Animation */
+        .loader-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            z-index: 5;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- BOTTOM NAVIGATION (Mobile) --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        
+        .nav-item-custom {
+            text-align: center;
+            color: #9E9E9E;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .nav-item-custom i {
+            font-size: 20px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .nav-item-custom.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Responsive Tweaks */
+        @media (min-width: 768px) {
+            .bottom-nav { display: none; }
+            .main-container { padding-bottom: 0; }
+        }
+        @media (max-width: 767px) {
+            .top-navbar-desktop { display: none; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg top-navbar top-navbar-desktop px-4">
+        <div class="d-flex align-items-center">
+            <img src="https://media-cgk2-2.cdn.whatsapp.net/v/t61.24694-24/420072465_408331761989045_7523445308360792099_n.jpg?ccb=11-4&oh=01_Q5Aa3AGtGrwAg7i8NAilZUGMgGbJcqTpJEWM7CR-Jx3wQ9XIsw&oe=6921BFE5&_nc_sid=5e03e0&_nc_cat=103" 
+                 onerror="this.src='https://cdn-icons-png.flaticon.com/512/3771/3771321.png'"
+                 alt="Logo" class="brand-logo rounded-circle">
+            <div>
+                <h6 class="m-0 fw-bold text-success">ADMINISTRASI</h6>
+                <small class="text-secondary">SMP Negeri 2 Kejayan</small>
+            </div>
+        </div>
+        <div class="ms-auto d-flex gap-3">
+            <button class="btn btn-outline-success btn-sm" onclick="switchTab('dashboard')">Home</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="location.reload()">Refresh</button>
+        </div>
+    </nav>
+
+    <div class="main-container bg-light">
+
+        <div id="view-dashboard" class="app-view active overflow-auto h-100">
+            <div class="hero-section">
+                <h2 class="fw-bold mb-1">Halo, Admin! 👋</h2>
+                <p class="opacity-75 small">Selamat bekerja, semoga hari ini menyenangkan.</p>
+            </div>
+
+            <div class="container menu-grid" style="margin-top: -30px;">
+                <div class="row g-3">
+                    
+                    <div class="col-6 col-md-4">
+                        <div class="menu-card" onclick="switchTab('mbg')">
+                            <div class="icon-box icon-mbg">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark">Aplikasi MBG</h6>
+                            <small class="text-muted d-none d-sm-block">Input Makan Bergizi</small>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="menu-card" onclick="switchTab('ifp')">
+                            <div class="icon-box icon-ifp">
+                                <i class="fas fa-tv"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark">Jadwal IFP</h6>
+                            <small class="text-muted d-none d-sm-block">Booking Lab IFP</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <div class="menu-card" onclick="switchTab('kuitansi')">
+                            <div class="icon-box icon-kuitansi">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark">Buat Kuitansi</h6>
+                            <small class="text-muted d-none d-sm-block">Generator Kuitansi</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 mt-4 p-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-bullhorn text-warning me-2"></i>
+                        <h6 class="fw-bold m-0">Info Terbaru</h6>
+                    </div>
+                    <ul class="list-unstyled small text-secondary mb-0 ps-1">
+                        <li class="mb-2">✅ Aplikasi MBG sudah update fitur input kelas.</li>
+                        <li class="mb-2">📅 Jangan lupa cek jadwal IFP sebelum booking.</li>
+                        <li>💡 Gunakan tombol "Home" untuk kembali ke menu ini.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-mbg" class="app-view">
+            <div class="loader-container" id="loader-mbg">
+                <div class="spinner"></div>
+                <small class="text-muted">Memuat MBG App...</small>
+            </div>
+            <iframe data-src="https://script.google.com/macros/s/AKfycbwRbF02PGfw8b6T2tNjENlviF-_7YM4jy2g8owfZ8awlmzQJv43NJ2Web7YIN8BvtoAoQ/exec" 
+                    class="full-frame" onload="hideLoader('loader-mbg')"></iframe>
+        </div>
+
+        <div id="view-ifp" class="app-view">
+            <div class="loader-container" id="loader-ifp">
+                <div class="spinner"></div>
+                <small class="text-muted">Memuat Jadwal IFP...</small>
+            </div>
+            <iframe data-src="https://script.google.com/macros/s/AKfycbwoi4BO9FfAqKi7Twy_3EQmXWoGGoB8DHWM3vJAbvpmfn7FkBNsTfM4C8J93xvNl46q/exec" 
+                    class="full-frame" onload="hideLoader('loader-ifp')"></iframe>
+        </div>
+
+        <div id="view-kuitansi" class="app-view">
+            <div class="loader-container" id="loader-kuitansi">
+                <div class="spinner"></div>
+                <small class="text-muted">Memuat Kuitansi...</small>
+            </div>
+            <iframe data-src="https://heri228-cell.github.io/aplikasi-kuitansi/" 
+                    class="full-frame" onload="hideLoader('loader-kuitansi')"></iframe>
+        </div>
+
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item-custom active" id="nav-dashboard" onclick="switchTab('dashboard')">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item-custom" id="nav-mbg" onclick="switchTab('mbg')">
+            <i class="fas fa-utensils"></i>
+            <span>MBG</span>
+        </div>
+        <div class="nav-item-custom" id="nav-ifp" onclick="switchTab('ifp')">
+            <i class="fas fa-tv"></i>
+            <span>IFP</span>
+        </div>
+        <div class="nav-item-custom" id="nav-kuitansi" onclick="switchTab('kuitansi')">
+            <i class="fas fa-file-invoice"></i>
+            <span>Kuitansi</span>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            // 1. Matikan semua view dan nav active
+            document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item-custom').forEach(el => el.classList.remove('active'));
+
+            // 2. Aktifkan view target
+            const targetView = document.getElementById('view-' + tabId);
+            if(targetView) {
+                targetView.classList.add('active');
+                
+                // LAZY LOADING LOGIC:
+                // Cek apakah iframe di dalamnya sudah punya src?
+                const iframe = targetView.querySelector('iframe');
+                if (iframe && !iframe.getAttribute('src')) {
+                    // Jika belum, ambil dari data-src dan pasang ke src
+                    // Ini membuat aplikasi baru loading saat tombol diklik (Hemat Kuota & Cepat)
+                    iframe.src = iframe.getAttribute('data-src');
+                }
+            }
+
+            // 3. Aktifkan nav icon (Mobile)
+            const targetNav = document.getElementById('nav-' + tabId);
+            if(targetNav) targetNav.classList.add('active');
+        }
+
+        function hideLoader(loaderId) {
+            // Sembunyikan spinner saat iframe selesai loading
+            const loader = document.getElementById(loaderId);
+            if(loader) {
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
