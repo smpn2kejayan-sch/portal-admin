@@ -4,400 +4,452 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Admin SMPN 2 Kejayan</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* --- PALET WARNA BIRU --- */
-            --primary-blue: #004e92;
-            --secondary-blue: #007bff;
-            --light-blue-bg: #f4f7f6;
+            /* --- GITHUB COLOR PALETTE --- */
+            --gh-bg: #f6f8fa;          /* Background Abu-abu */
+            --gh-border: #d0d7de;      /* Garis Batas Halus */
+            --gh-text-main: #24292f;   /* Teks Utama (Hitam Pudar) */
+            --gh-text-muted: #57606a;  /* Teks Kedua (Abu-abu) */
+            --gh-link: #0969da;        /* Biru Link GitHub */
+            --gh-sidebar-bg: #f6f8fa;  
+            --gh-white: #ffffff;
+            --gh-hover: #f3f4f6;
             --sidebar-width: 280px;
-            --text-on-blue: #ffffff;
-            --text-muted-blue: #aab7c4;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-blue-bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--gh-white);
+            color: var(--gh-text-main);
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
         }
 
-        #wrapper {
+        /* --- LAYOUT UTAMA --- */
+        .wrapper {
             display: flex;
-            width: 100%;
-            align-items: stretch;
-            position: relative;
-        }
-
-        /* --- SIDEBAR --- */
-        #sidebar-wrapper {
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--primary-blue) 0%, #003366 100%);
-            color: var(--text-on-blue);
-            transition: all 0.3s ease;
-            position: fixed; /* Fixed agar tidak ikut scroll */
-            height: 100vh;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            overflow-y: auto;
-        }
-        
-        .sidebar-heading {
-            padding: 1.5rem 1rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Agar tombol close ada di kanan */
-            background: rgba(0,0,0,0.1);
-        }
-        .brand-logo {
-            width: 40px; height: 40px;
-            margin-right: 10px;
-            border-radius: 50%;
-            border: 2px solid var(--secondary-blue);
-        }
-
-        /* Tombol Close di Sidebar (Hanya muncul di Mobile) */
-        .sidebar-close-btn {
-            display: none;
-            cursor: pointer;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .list-group-item {
-            background-color: transparent;
-            color: var(--text-muted-blue);
-            border: none;
-            padding: 1rem 1.5rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        .list-group-item:hover {
-            background-color: rgba(255,255,255,0.05);
-            color: var(--text-on-blue);
-        }
-        .list-group-item.active {
-            background-color: var(--secondary-blue);
-            color: white;
-            font-weight: 600;
-            border-radius: 0 25px 25px 0;
-        }
-        .list-group-item i { margin-right: 15px; width: 20px; text-align: center; }
-        .menu-label {
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
-            color: var(--text-muted-blue); margin: 1.5rem 1.5rem 0.5rem; font-weight: 700;
-        }
-
-        /* --- KONTEN UTAMA --- */
-        #page-content-wrapper {
-            width: 100%;
-            margin-left: var(--sidebar-width); /* Default Desktop: Ada margin kiri */
-            transition: all 0.3s ease;
             min-height: 100vh;
         }
 
-        /* Top Navbar */
-        .top-navbar {
+        /* --- SIDEBAR (Desktop: Fixed, Mobile: Hidden) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--gh-sidebar-bg);
+            border-right: 1px solid var(--gh-border);
+            display: flex;
+            flex-direction: column;
+            position: fixed; /* Kunci sidebar di kiri */
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        /* Header Sidebar */
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--gh-border);
+            display: flex;
+            align-items: center;
+            background: var(--gh-sidebar-bg);
+        }
+        .brand-logo {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--gh-border);
+            margin-right: 12px;
+        }
+        .brand-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gh-text-main);
+        }
+
+        /* Menu List Sidebar */
+        .sidebar-menu {
+            padding: 16px 8px;
+            overflow-y: auto;
+        }
+        .menu-category {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gh-text-muted);
+            margin: 16px 8px 8px;
+            text-transform: uppercase;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 2px;
+            border-radius: 6px;
+            color: var(--gh-text-main);
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .nav-item:hover {
+            background-color: rgba(208, 215, 222, 0.32);
+            text-decoration: none;
+            color: var(--gh-text-main);
+        }
+        .nav-item.active {
+            background-color: rgba(208, 215, 222, 0.48);
+            font-weight: 600;
+        }
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+            color: var(--gh-text-muted);
+            margin-right: 8px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width); /* Geser konten ke kanan sebesar lebar sidebar */
+            background-color: var(--gh-white);
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        /* Top Navbar (Mobile Hamburger & Desktop Breadcrumb) */
+        .top-bar {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--gh-border);
+            background-color: var(--gh-sidebar-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .breadcrumb-custom {
+            font-size: 14px;
+            color: var(--gh-text-muted);
+        }
+        .breadcrumb-active {
+            font-weight: 600;
+            color: var(--gh-text-main);
+        }
+
+        /* Tombol Hamburger (Hanya Mobile) */
+        .mobile-toggle {
+            display: none; /* Sembunyi di Desktop */
+            background: none;
+            border: 1px solid var(--gh-border);
+            border-radius: 6px;
+            padding: 4px 8px;
+            color: var(--gh-text-muted);
+            cursor: pointer;
+            margin-right: 12px;
+        }
+
+        /* --- CONTENT AREA (WORKFLOW LIST STYLE) --- */
+        .content-body {
+            padding: 24px;
+            background-color: var(--gh-white);
+        }
+
+        /* Kotak Putih dengan Border (Github Card Style) */
+        .gh-card {
+            background: var(--gh-white);
+            border: 1px solid var(--gh-border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .gh-card-header {
+            background-color: var(--gh-bg);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gh-border);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* List Items (Pengganti Kartu Besar) */
+        .workflow-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gh-border);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .workflow-item:last-child { border-bottom: none; }
+        .workflow-item:hover { background-color: var(--gh-bg); }
+        
+        .status-icon {
+            margin-right: 12px;
+            color: #1a7f37; /* Github Green */
+            font-size: 16px;
+        }
+        .workflow-info { flex: 1; }
+        .workflow-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gh-text-main);
+            margin-bottom: 2px;
+        }
+        .workflow-meta {
+            font-size: 12px;
+            color: var(--gh-text-muted);
+        }
+        .workflow-action {
+            font-size: 12px;
+            color: var(--gh-text-muted);
+        }
+
+        /* IFRAME CONTAINER (Efisien tanpa scroll) */
+        .app-wrapper {
+            display: none; /* Default Hidden */
+            height: calc(100vh - 120px);
             background: white;
-            padding: 0.8rem 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1040;
-        }
-        #menu-toggle { cursor: pointer; font-size: 1.5rem; color: var(--primary-blue); }
-
-        /* --- OVERLAY UNTUK MOBILE --- */
-        #sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1045; /* Di bawah sidebar, di atas konten */
-        }
-
-        /* --- LOGIKA RESPONSIVE (HP) --- */
-        @media (max-width: 768px) {
-            #sidebar-wrapper {
-                left: calc(-1 * var(--sidebar-width)); /* Sembunyi ke kiri */
-            }
-            #page-content-wrapper {
-                margin-left: 0; /* Konten full width */
-            }
-            
-            /* Class aktif untuk memunculkan sidebar di HP */
-            #wrapper.show-sidebar #sidebar-wrapper {
-                left: 0;
-            }
-            #wrapper.show-sidebar #sidebar-overlay {
-                display: block;
-            }
-            .sidebar-close-btn {
-                display: block; /* Munculkan tombol X */
-            }
-        }
-
-        /* --- DASHBOARD CARDS & APP VIEW --- */
-        .dashboard-card {
-            background: white; border-radius: 15px; border: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
-            overflow: hidden; cursor: pointer; height: 100%;
-        }
-        .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,78,146,0.15); }
-        .card-icon-header { padding: 1.5rem; color: white; }
-        .bg-blue-gradient { background: linear-gradient(135deg, #004e92, #007bff); }
-        .bg-cyan-gradient { background: linear-gradient(135deg, #0099cc, #33ccff); }
-        .bg-indigo-gradient { background: linear-gradient(135deg, #6610f2, #8540f5); }
-
-        /* Iframe Full Height Logic */
-        .iframe-container {
+            border-radius: 6px;
+            border: 1px solid var(--gh-border);
+            overflow: hidden;
             position: relative;
-            width: 100%;
-            height: calc(100vh - 140px); /* Full height dikurangi navbar & header */
-            background: white; border-radius: 10px; overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .full-frame { width: 100%; height: 100%; border: none; }
+        
         .loader {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: var(--secondary-blue); font-weight: 600;
+            color: var(--gh-text-muted); font-size: 14px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Utility Classes */
-        .d-none { display: none !important; }
-        .main-section { padding: 2rem; display: none; } /* Default sembunyi */
-        .main-section.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* --- OVERLAY MOBILE --- */
+        .overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); z-index: 900;
+        }
 
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%); /* Sembunyi ke kiri */
+                width: 250px;
+            }
+            .sidebar.active { transform: translateX(0); }
+            .overlay.active { display: block; }
+            
+            .main-content { margin-left: 0; width: 100%; }
+            .mobile-toggle { display: block; }
+            
+            .content-body { padding: 16px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-    <div id="wrapper">
-
-        <div id="sidebar-wrapper">
-            <div class="sidebar-heading">
-                <div class="d-flex align-items-center">
-                    <img src="https://media-cgk2-2.cdn.whatsapp.net/v/t61.24694-24/420072465_408331761989045_7523445308360792099_n.jpg?ccb=11-4&oh=01_Q5Aa3AGtGrwAg7i8NAilZUGMgGbJcqTpJEWM7CR-Jx3wQ9XIsw&oe=6921BFE5&_nc_sid=5e03e0&_nc_cat=103" 
-                         onerror="this.src='https://cdn-icons-png.flaticon.com/512/3771/3771321.png'"
-                         alt="Logo" class="brand-logo">
-                    <span class="small">SMPN 2 Kejayan</span>
-                </div>
-                <i class="fas fa-times sidebar-close-btn" onclick="closeSidebar()"></i>
+    <div class="wrapper">
+        
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="https://media-cgk2-2.cdn.whatsapp.net/v/t61.24694-24/420072465_408331761989045_7523445308360792099_n.jpg?ccb=11-4&oh=01_Q5Aa3AGtGrwAg7i8NAilZUGMgGbJcqTpJEWM7CR-Jx3wQ9XIsw&oe=6921BFE5&_nc_sid=5e03e0&_nc_cat=103" 
+                     onerror="this.src='https://cdn-icons-png.flaticon.com/512/3771/3771321.png'"
+                     class="brand-logo" alt="Logo">
+                <div class="brand-text">SMPN 2 Kejayan</div>
             </div>
+
+            <div class="sidebar-menu">
+                <div class="nav-item active" onclick="showDashboard()">
+                    <i class="fas fa-home"></i> Dashboard
+                </div>
+
+                <div class="menu-category">Administrasi</div>
+                <div class="nav-item" onclick="showPlaceholder('Kurikulum')">
+                    <i class="far fa-folder"></i> Adm. Kurikulum
+                </div>
+                <div class="nav-item" onclick="showPlaceholder('Kesiswaan')">
+                    <i class="far fa-user"></i> Adm. Kesiswaan
+                </div>
+                <div class="nav-item" onclick="showPlaceholder('Umum')">
+                    <i class="far fa-building"></i> Adm. Umum
+                </div>
+
+                <div class="menu-category">Settings</div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </div>
+            </div>
+        </nav>
+
+
+        <main class="main-content">
             
-            <div class="list-group list-group-flush my-3">
-                <div class="menu-label">Menu Utama</div>
-                <a onclick="showSection('dashboard')" class="list-group-item list-group-item-action active nav-link-custom" id="link-dashboard">
-                    <i class="fas fa-tachometer-alt"></i>Dashboard
-                </a>
-
-                <div class="menu-label">Administrasi</div>
-                <a onclick="showSection('kurikulum')" class="list-group-item list-group-item-action nav-link-custom" id="link-kurikulum">
-                    <i class="fas fa-book-open"></i>Adm. Kurikulum
-                </a>
-                <a onclick="showSection('kesiswaan')" class="list-group-item list-group-item-action nav-link-custom" id="link-kesiswaan">
-                    <i class="fas fa-user-graduate"></i>Adm. Kesiswaan
-                </a>
-                <a onclick="showSection('umum')" class="list-group-item list-group-item-action nav-link-custom" id="link-umum">
-                    <i class="fas fa-building"></i>Adm. Umum
-                </a>
-            </div>
-        </div>
-
-        <div id="page-content-wrapper">
-
-            <nav class="top-navbar">
+            <div class="top-bar">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-bars" id="menu-toggle" onclick="toggleSidebar()"></i>
-                    <h5 class="ms-3 mb-0 fw-bold text-primary" id="page-title">Dashboard</h5>
+                    <button class="mobile-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb-custom">
+                        SMPN 2 Kejayan <span class="mx-2">/</span> <span class="breadcrumb-active" id="page-title">Dashboard</span>
+                    </div>
                 </div>
-                <div>
-                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="35" class="rounded-circle border">
-                </div>
-            </nav>
+                <button id="btn-back" class="btn btn-sm btn-outline-secondary d-none" onclick="closeApp()">
+                    <i class="fas fa-arrow-left me-1"></i> Kembali
+                </button>
+            </div>
 
-            <div class="container-fluid main-section active" id="section-dashboard">
+            <div class="content-body">
                 
-                <div id="dashboard-menu-cards">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="card dashboard-card h-100" onclick="openApp('mbg')">
-                                <div class="card-icon-header bg-blue-gradient">
-                                    <i class="fas fa-utensils fa-3x mb-2"></i>
-                                    <h4 class="fw-bold">Aplikasi MBG</h4>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-muted">Input kehadiran Makan Bergizi Gratis harian.</p>
-                                    <button class="btn btn-outline-primary btn-sm stretched-link">Buka Aplikasi</button>
-                                </div>
-                            </div>
+                <div id="dashboard-list">
+                    <div class="gh-card">
+                        <div class="gh-card-header">
+                            All Workflows (Aplikasi)
                         </div>
                         
-                        <div class="col-md-4">
-                            <div class="card dashboard-card h-100" onclick="openApp('ifp')">
-                                <div class="card-icon-header bg-cyan-gradient">
-                                    <i class="fas fa-tv fa-3x mb-2"></i>
-                                    <h4 class="fw-bold">Jadwal IFP</h4>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-muted">Cek jadwal dan booking Lab IFP.</p>
-                                    <button class="btn btn-outline-info btn-sm stretched-link">Buka Jadwal</button>
-                                </div>
+                        <div class="workflow-item" onclick="openApp('mbg')">
+                            <i class="fas fa-check-circle status-icon"></i>
+                            <div class="workflow-info">
+                                <div class="workflow-title">Aplikasi MBG (Makan Bergizi Gratis)</div>
+                                <div class="workflow-meta">Input kehadiran makan harian siswa</div>
                             </div>
+                            <div class="workflow-action">Buka <i class="fas fa-chevron-right ms-1"></i></div>
                         </div>
 
-                         <div class="col-md-4">
-                            <div class="card dashboard-card h-100" onclick="openApp('kuitansi')">
-                                <div class="card-icon-header bg-indigo-gradient">
-                                    <i class="fas fa-file-invoice-dollar fa-3x mb-2"></i>
-                                    <h4 class="fw-bold">Buat Kuitansi</h4>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-muted">Generator kuitansi sekolah digital.</p>
-                                    <button class="btn btn-outline-primary btn-sm stretched-link">Buat Kuitansi</button>
-                                </div>
+                        <div class="workflow-item" onclick="openApp('ifp')">
+                            <i class="fas fa-check-circle status-icon"></i>
+                            <div class="workflow-info">
+                                <div class="workflow-title">Jadwal & Booking IFP</div>
+                                <div class="workflow-meta">Cek ketersediaan Lab IFP</div>
                             </div>
+                            <div class="workflow-action">Buka <i class="fas fa-chevron-right ms-1"></i></div>
+                        </div>
+
+                        <div class="workflow-item" onclick="openApp('kuitansi')">
+                            <i class="fas fa-check-circle status-icon"></i>
+                            <div class="workflow-info">
+                                <div class="workflow-title">Generator Kuitansi Digital</div>
+                                <div class="workflow-meta">Alat bantu cetak kuitansi sekolah</div>
+                            </div>
+                            <div class="workflow-action">Buka <i class="fas fa-chevron-right ms-1"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="gh-card mt-4">
+                        <div class="gh-card-header">
+                            Recent Activity
+                        </div>
+                        <div class="p-3 text-muted small">
+                            Belum ada aktivitas terbaru hari ini.
                         </div>
                     </div>
                 </div>
 
-                <div id="app-container" class="d-none">
-                    <div class="d-flex justify-content-between align-items-center mb-2 bg-white p-2 rounded shadow-sm">
-                        <div class="d-flex align-items-center">
-                            <button class="btn btn-secondary btn-sm me-2" onclick="closeApp()">
-                                <i class="fas fa-arrow-left"></i> Kembali
-                            </button>
-                            <h6 class="fw-bold m-0 text-primary" id="app-title-display">Aplikasi</h6>
-                        </div>
-                        <span class="badge bg-success">Aktif</span>
+
+                <div id="app-view" class="app-wrapper">
+                    <div class="loader" id="loader">
+                        <div class="spinner-border text-secondary mb-2" role="status"></div>
+                        <span>Memuat Aplikasi...</span>
                     </div>
-                    
-                    <div class="iframe-container">
-                        <div class="loader" id="app-loader">
-                            <i class="fas fa-spinner fa-spin me-2"></i> Memuat Aplikasi...
-                        </div>
-                        <iframe id="main-iframe" class="full-frame" src=""></iframe>
-                    </div>
+                    <iframe id="main-frame" class="full-frame" src=""></iframe>
+                </div>
+                
+                <div id="placeholder-view" class="d-none text-center py-5">
+                    <i class="fas fa-tools fa-3x text-muted mb-3"></i>
+                    <h4 id="placeholder-title">Halaman</h4>
+                    <p class="text-muted">Fitur ini sedang dalam pengembangan.</p>
                 </div>
 
             </div>
-
-            <div class="container-fluid main-section" id="section-kurikulum">
-                <div class="card dashboard-card p-5 text-center">
-                    <h3>Administrasi Kurikulum</h3>
-                    <p>Konten kurikulum akan muncul di sini.</p>
-                </div>
-            </div>
-            
-            <div class="container-fluid main-section" id="section-kesiswaan">
-                <div class="card dashboard-card p-5 text-center">
-                    <h3>Administrasi Kesiswaan</h3>
-                </div>
-            </div>
-            
-            <div class="container-fluid main-section" id="section-umum">
-                <div class="card dashboard-card p-5 text-center">
-                    <h3>Administrasi Umum</h3>
-                </div>
-            </div>
-
-        </div>
+        </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        // --- LOGIKA SIDEBAR MOBILE ---
-        const wrapper = document.getElementById("wrapper");
+        // --- LOGIKA TOGGLE SIDEBAR MOBILE ---
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
 
         function toggleSidebar() {
-            wrapper.classList.toggle("show-sidebar");
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
-        function closeSidebar() {
-            wrapper.classList.remove("show-sidebar");
-        }
-
-        // --- LOGIKA NAVIGASI HALAMAN UTAMA ---
-        function showSection(sectionId) {
-            // Reset View
-            document.querySelectorAll('.main-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-link-custom').forEach(link => link.classList.remove('active'));
-
-            // Set Active
-            document.getElementById('section-' + sectionId).classList.add('active');
-            document.getElementById('link-' + sectionId).classList.add('active');
-
-            // Set Title
-            let title = "Dashboard";
-            if(sectionId === 'kurikulum') title = "Adm. Kurikulum";
-            if(sectionId === 'kesiswaan') title = "Adm. Kesiswaan";
-            if(sectionId === 'umum') title = "Adm. Umum";
-            document.getElementById('page-title').innerText = title;
-
-            // Jika di HP, tutup sidebar setelah klik menu
-            closeSidebar();
-            
-            // Jika pindah dari dashboard, reset tampilan app ke menu utama
-            if(sectionId !== 'dashboard') {
-                closeApp();
-            }
-        }
-
-        // --- LOGIKA BUKA/TUTUP APLIKASI (SWAP VIEW) ---
+        // --- DATABASE URL APLIKASI ---
         const apps = {
-            'mbg': { url: 'https://script.google.com/macros/s/AKfycbwRbF02PGfw8b6T2tNjENlviF-_7YM4jy2g8owfZ8awlmzQJv43NJ2Web7YIN8BvtoAoQ/exec', title: 'Aplikasi MBG' },
-            'ifp': { url: 'https://script.google.com/macros/s/AKfycbwoi4BO9FfAqKi7Twy_3EQmXWoGGoB8DHWM3vJAbvpmfn7FkBNsTfM4C8J93xvNl46q/exec', title: 'Jadwal IFP' },
-            'kuitansi': { url: 'https://heri228-cell.github.io/aplikasi-kuitansi/', title: 'Pembuatan Kuitansi' }
+            'mbg': { title: 'Aplikasi MBG', url: 'https://script.google.com/macros/s/AKfycbwRbF02PGfw8b6T2tNjENlviF-_7YM4jy2g8owfZ8awlmzQJv43NJ2Web7YIN8BvtoAoQ/exec' },
+            'ifp': { title: 'Jadwal IFP', url: 'https://script.google.com/macros/s/AKfycbwoi4BO9FfAqKi7Twy_3EQmXWoGGoB8DHWM3vJAbvpmfn7FkBNsTfM4C8J93xvNl46q/exec' },
+            'kuitansi': { title: 'Kuitansi', url: 'https://heri228-cell.github.io/aplikasi-kuitansi/' }
         };
 
-        const menuCards = document.getElementById('dashboard-menu-cards');
-        const appContainer = document.getElementById('app-container');
-        const mainIframe = document.getElementById('main-iframe');
-        const appLoader = document.getElementById('app-loader');
-        const appTitleDisplay = document.getElementById('app-title-display');
+        // --- LOGIKA NAVIGASI ---
+        const dashboardList = document.getElementById('dashboard-list');
+        const appView = document.getElementById('app-view');
+        const placeholderView = document.getElementById('placeholder-view');
+        const mainFrame = document.getElementById('main-frame');
+        const pageTitle = document.getElementById('page-title');
+        const btnBack = document.getElementById('btn-back');
+        const loader = document.getElementById('loader');
 
-        function openApp(appKey) {
-            // 1. Sembunyikan Kartu Menu
-            menuCards.classList.add('d-none');
+        function showDashboard() {
+            // Reset Tampilan ke Menu Utama
+            dashboardList.classList.remove('d-none');
+            appView.style.display = 'none';
+            placeholderView.classList.add('d-none');
             
-            // 2. Tampilkan Container Aplikasi
-            appContainer.classList.remove('d-none');
-            appLoader.style.display = 'block';
-            mainIframe.style.opacity = '0';
-
-            // 3. Load URL
-            appTitleDisplay.innerText = apps[appKey].title;
-            mainIframe.src = apps[appKey].url;
-
-            // 4. Smooth Fade In saat load selesai
-            mainIframe.onload = function() {
-                appLoader.style.display = 'none';
-                mainIframe.style.opacity = '1';
-            };
+            // Reset Navbar
+            pageTitle.textContent = 'Dashboard';
+            btnBack.classList.add('d-none');
+            
+            // Reset Iframe (Hemat Memori)
+            mainFrame.src = 'about:blank';
+            
+            // Tutup Sidebar di Mobile
+            if(window.innerWidth <= 768) toggleSidebar();
         }
 
+        function openApp(appKey) {
+            const app = apps[appKey];
+            
+            // 1. Sembunyikan List Menu
+            dashboardList.classList.add('d-none');
+            placeholderView.classList.add('d-none');
+            
+            // 2. Tampilkan Container App
+            appView.style.display = 'block';
+            btnBack.classList.remove('d-none');
+            pageTitle.textContent = app.title;
+            
+            // 3. Load Iframe
+            loader.style.display = 'flex';
+            mainFrame.style.opacity = '0';
+            mainFrame.src = app.url;
+            
+            mainFrame.onload = function() {
+                loader.style.display = 'none';
+                mainFrame.style.opacity = '1';
+            };
+        }
+        
         function closeApp() {
-            // 1. Matikan Iframe (biar ringan)
-            mainIframe.src = 'about:blank';
+            showDashboard();
+        }
+
+        function showPlaceholder(titleName) {
+            dashboardList.classList.add('d-none');
+            appView.style.display = 'none';
+            placeholderView.classList.remove('d-none');
             
-            // 2. Sembunyikan Container Aplikasi
-            appContainer.classList.add('d-none');
+            document.getElementById('placeholder-title').textContent = titleName;
+            pageTitle.textContent = titleName;
             
-            // 3. Munculkan Kembali Kartu Menu
-            menuCards.classList.remove('d-none');
+            if(window.innerWidth <= 768) toggleSidebar();
         }
     </script>
 </body>
